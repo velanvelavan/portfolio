@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sibyl Anto K.K — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #050810;
+    --surface: #0a0f1e;
+    --glass: rgba(255,255,255,0.04);
+    --border: rgba(0,210,255,0.15);
+    --accent: #00d2ff;
+    --accent2: #7b2ff7;
+    --accent3: #ff3c6e;
+    --gold: #ffd700;
+    --text: #e8eaf6;
+    --muted: #6b7280;
+    --glow: 0 0 30px rgba(0,210,255,0.3);
+    --glow2: 0 0 30px rgba(123,47,247,0.4);
+  }
+ 
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+ 
+  html { scroll-behavior: smooth; }
+ 
+  body {
+    font-family: 'Rajdhani', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+ 
+  /* ─── Scrollbar ─── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+ 
+  /* ─── Canvas Stars ─── */
+  #stars-canvas {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0; pointer-events: none;
+  }
+ 
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 16px 40px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(5,8,16,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+ 
+  .nav-logo {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900; font-size: 1.1rem;
+    letter-spacing: 3px; color: var(--accent);
+    text-shadow: var(--glow);
+  }
+ 
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem; letter-spacing: 2px;
+    color: var(--muted); text-decoration: none;
+    text-transform: uppercase;
+    transition: color .3s, text-shadow .3s;
+  }
+  .nav-links a:hover { color: var(--accent); text-shadow: var(--glow); }
+ 
+  /* ─── HERO ─── */
+  #hero {
+    position: relative; z-index: 1;
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    padding: 100px 40px 60px;
+    overflow: hidden;
+  }
+ 
+  .hero-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 80px; align-items: center;
+    max-width: 1200px; width: 100%;
+  }
+ 
+  .hero-left { position: relative; }
+ 
+  .greeting {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem; letter-spacing: 4px;
+    color: var(--accent); margin-bottom: 16px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .greeting::before {
+    content: ''; width: 40px; height: 1px;
+    background: var(--accent);
+    box-shadow: var(--glow);
+  }
+ 
+  .hero-name {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 900; line-height: 1.1;
+    margin-bottom: 12px;
+    background: linear-gradient(135deg, #fff 30%, var(--accent) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+ 
+  .hero-role {
+    font-size: 1.3rem; font-weight: 600;
+    color: var(--accent2); letter-spacing: 2px;
+    margin-bottom: 24px; text-transform: uppercase;
+  }
+ 
+  .hero-desc {
+    font-size: 1.05rem; color: var(--muted);
+    line-height: 1.8; max-width: 480px; margin-bottom: 36px;
+  }
+ 
+  .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; }
+ 
+  .btn-primary {
+    padding: 14px 32px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border: none; border-radius: 4px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem; letter-spacing: 2px;
+    text-transform: uppercase; color: #fff;
+    cursor: pointer; text-decoration: none;
+    transition: transform .3s, box-shadow .3s;
+    box-shadow: 0 0 20px rgba(0,210,255,0.3);
+  }
+  .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,210,255,0.5); }
+ 
+  .btn-outline {
+    padding: 14px 32px;
+    background: transparent;
+    border: 1px solid var(--accent);
+    border-radius: 4px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--accent);
+    cursor: pointer; text-decoration: none;
+    transition: all .3s;
+  }
+  .btn-outline:hover { background: rgba(0,210,255,0.1); transform: translateY(-3px); }
+ 
+  /* Photo Card */
+  .hero-right { display: flex; justify-content: center; }
+ 
+  .photo-3d-wrapper {
+    position: relative;
+    width: 320px; height: 380px;
+    transform-style: preserve-3d;
+    animation: float3d 6s ease-in-out infinite;
+    cursor: pointer;
+  }
+ 
+  @keyframes float3d {
+    0%, 100% { transform: rotateY(-8deg) rotateX(4deg) translateY(0); }
+    50% { transform: rotateY(8deg) rotateX(-4deg) translateY(-20px); }
+  }
+ 
+  .photo-card {
+    width: 100%; height: 100%;
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid var(--border);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 0 40px rgba(0,210,255,0.2);
+  }
+ 
+  .photo-card img {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+  }
+ 
+  .photo-card::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, transparent 50%, rgba(0,210,255,0.15) 100%);
+  }
+ 
+  .card-glow-ring {
+    position: absolute; inset: -3px;
+    border-radius: 23px;
+    background: conic-gradient(from 0deg, var(--accent), var(--accent2), var(--accent3), var(--accent));
+    z-index: -1;
+    animation: spin-glow 4s linear infinite;
+    opacity: 0.7;
+  }
+ 
+  @keyframes spin-glow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+ 
+  .floating-badge {
+    position: absolute;
+    background: rgba(5,8,16,0.9);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 10px 16px;
+    font-size: 0.78rem;
+    white-space: nowrap;
+  }
+  .fb-1 { top: -20px; right: -30px; border-color: rgba(0,210,255,0.4); color: var(--accent); }
+  .fb-2 { bottom: 30px; left: -40px; border-color: rgba(123,47,247,0.4); color: var(--accent2); }
+ 
+  .fb-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 6px; animation: pulse-dot 1.5s ease-in-out infinite; }
+  .fb-1 .fb-dot { background: var(--accent); box-shadow: 0 0 8px var(--accent); }
+  .fb-2 .fb-dot { background: var(--accent2); box-shadow: 0 0 8px var(--accent2); }
+ 
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.5); }
+  }
+ 
+  /* ─── SECTION COMMON ─── */
+  section { position: relative; z-index: 1; padding: 100px 40px; }
+ 
+  .section-header {
+    text-align: center; margin-bottom: 70px;
+  }
+ 
+  .section-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem; letter-spacing: 4px;
+    color: var(--accent); text-transform: uppercase;
+    margin-bottom: 12px; display: block;
+  }
+ 
+  .section-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(1.8rem, 3vw, 2.8rem);
+    font-weight: 700;
+    background: linear-gradient(90deg, #fff, var(--accent));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 16px;
+  }
+ 
+  .section-line {
+    width: 60px; height: 2px; margin: 0 auto;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    box-shadow: var(--glow);
+  }
+ 
+  /* ─── SKILLS / ABOUT ─── */
+  #about { background: linear-gradient(180deg, var(--bg), var(--surface)); }
+ 
+  .about-grid {
+    display: grid; grid-template-columns: 1fr 2fr;
+    gap: 60px; align-items: start;
+    max-width: 1100px; margin: 0 auto;
+  }
+ 
+  .about-stats { display: flex; flex-direction: column; gap: 20px; }
+ 
+  .stat-card {
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: 16px; padding: 24px;
+    text-align: center;
+    transition: transform .3s, border-color .3s;
+  }
+  .stat-card:hover { transform: translateY(-5px); border-color: var(--accent); }
+ 
+  .stat-number {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.2rem; font-weight: 900;
+    color: var(--accent); display: block;
+  }
+  .stat-label { font-size: 0.85rem; color: var(--muted); letter-spacing: 1px; margin-top: 4px; }
+ 
+  .about-content h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.4rem; color: var(--text);
+    margin-bottom: 16px; font-weight: 700;
+  }
+ 
+  .about-content p {
+    color: var(--muted); line-height: 1.9;
+    font-size: 1rem; margin-bottom: 32px;
+  }
+ 
+  .skills-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 16px; margin-top: 24px;
+  }
+ 
+  .skill-item label {
+    font-size: 0.82rem; color: var(--text);
+    letter-spacing: 1px; margin-bottom: 6px; display: block;
+  }
+  .skill-bar { height: 4px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden; }
+  .skill-fill {
+    height: 100%; border-radius: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    box-shadow: 0 0 8px var(--accent);
+    transform-origin: left;
+    animation: bar-grow 1.5s ease forwards;
+    transform: scaleX(0);
+  }
+  @keyframes bar-grow { to { transform: scaleX(1); } }
+ 
+  /* ─── PROJECTS ─── */
+  #projects { background: var(--bg); }
+ 
+  .projects-container { max-width: 1200px; margin: 0 auto; }
+ 
+  /* Tab filter */
+  .proj-tabs {
+    display: flex; gap: 12px; justify-content: center;
+    margin-bottom: 50px; flex-wrap: wrap;
+  }
+  .tab-btn {
+    padding: 10px 24px;
+    background: var(--glass); border: 1px solid var(--border);
+    border-radius: 30px; cursor: pointer;
+    font-family: 'Space Mono', monospace; font-size: 0.72rem;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: var(--muted); transition: all .3s;
+  }
+  .tab-btn.active, .tab-btn:hover {
+    background: linear-gradient(135deg, rgba(0,210,255,0.15), rgba(123,47,247,0.15));
+    border-color: var(--accent); color: var(--accent);
+    box-shadow: var(--glow);
+  }
+ 
+  .projects-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 28px;
+  }
+ 
+  .proj-card {
+    background: var(--glass); border: 1px solid var(--border);
+    border-radius: 20px; overflow: hidden;
+    transition: transform .4s cubic-bezier(.175,.885,.32,1.275), box-shadow .4s, border-color .4s;
+    cursor: pointer;
+    position: relative;
+  }
+  .proj-card:hover {
+    transform: translateY(-10px) rotateX(2deg);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.5), 0 0 30px rgba(0,210,255,0.2);
+    border-color: var(--accent);
+  }
+ 
+  .proj-media {
+    width: 100%; height: 220px;
+    overflow: hidden; position: relative;
+    background: #0d1226;
+  }
+  .proj-media img, .proj-media video {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+    transition: transform .6s ease;
+  }
+  .proj-card:hover .proj-media img,
+  .proj-card:hover .proj-media video { transform: scale(1.05); }
+ 
+  .proj-type-badge {
+    position: absolute; top: 14px; left: 14px;
+    font-family: 'Space Mono', monospace; font-size: 0.6rem;
+    letter-spacing: 2px; text-transform: uppercase;
+    padding: 5px 12px; border-radius: 20px;
+    backdrop-filter: blur(10px);
+  }
+  .badge-web { background: rgba(0,210,255,0.2); color: var(--accent); border: 1px solid rgba(0,210,255,0.3); }
+  .badge-ps { background: rgba(123,47,247,0.2); color: var(--accent2); border: 1px solid rgba(123,47,247,0.3); }
+  .badge-logo { background: rgba(255,60,110,0.2); color: var(--accent3); border: 1px solid rgba(255,60,110,0.3); }
+ 
+  .play-overlay {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(0,0,0,0.4);
+    opacity: 0; transition: opacity .3s;
+  }
+  .proj-card:hover .play-overlay { opacity: 1; }
+ 
+  .play-btn {
+    width: 60px; height: 60px; border-radius: 50%;
+    background: rgba(0,210,255,0.9);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 30px rgba(0,210,255,0.6);
+    transition: transform .3s;
+  }
+  .play-btn:hover { transform: scale(1.2); }
+  .play-btn svg { width: 22px; height: 22px; fill: #000; margin-left: 4px; }
+ 
+  .proj-info { padding: 22px 24px; }
+ 
+  .proj-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.95rem; font-weight: 700;
+    color: var(--text); margin-bottom: 8px; letter-spacing: 1px;
+  }
+  .proj-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.6; margin-bottom: 16px; }
+ 
+  .proj-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+  .proj-tag {
+    font-size: 0.68rem; letter-spacing: 1px; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 20px;
+    background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+    color: var(--muted);
+  }
+ 
+  /* ─── VIDEO MODAL ─── */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; z-index: 1000;
+    background: rgba(0,0,0,0.92); backdrop-filter: blur(10px);
+    align-items: center; justify-content: center;
+  }
+  .modal-overlay.active { display: flex; }
+ 
+  .modal-box {
+    position: relative; max-width: 900px; width: 95%;
+    background: var(--surface);
+    border: 1px solid var(--border); border-radius: 20px;
+    overflow: hidden;
+    animation: modal-in .4s cubic-bezier(.175,.885,.32,1.275);
+  }
+  @keyframes modal-in { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+ 
+  .modal-close {
+    position: absolute; top: 16px; right: 16px; z-index: 10;
+    width: 36px; height: 36px; border-radius: 50%;
+    background: rgba(255,255,255,0.1); border: 1px solid var(--border);
+    color: var(--text); cursor: pointer; font-size: 1.2rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: all .3s;
+  }
+  .modal-close:hover { background: var(--accent3); color: #fff; }
+ 
+  .modal-video { width: 100%; display: block; max-height: 70vh; }
+  .modal-img { width: 100%; display: block; max-height: 80vh; object-fit: contain; }
+ 
+  /* ─── CONTACT ─── */
+  #contact { background: var(--surface); }
+ 
+  .contact-inner {
+    max-width: 700px; margin: 0 auto; text-align: center;
+  }
+ 
+  .contact-card {
+    background: var(--glass); border: 1px solid var(--border);
+    border-radius: 24px; padding: 50px 40px; margin-top: 40px;
+    position: relative; overflow: hidden;
+  }
+  .contact-card::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(0,210,255,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+ 
+  .contact-links { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-top: 32px; }
+ 
+  .contact-link {
+    display: flex; align-items: center; gap: 10px;
+    padding: 14px 24px; border-radius: 12px;
+    background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+    color: var(--muted); text-decoration: none; font-size: 0.88rem;
+    transition: all .3s; letter-spacing: 1px;
+  }
+  .contact-link:hover { border-color: var(--accent); color: var(--accent); background: rgba(0,210,255,0.08); transform: translateY(-3px); }
+ 
+  .contact-link .icon { font-size: 1.1rem; }
+ 
+  /* ─── FOOTER ─── */
+  footer {
+    position: relative; z-index: 1;
+    text-align: center; padding: 30px;
+    border-top: 1px solid var(--border);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem; color: var(--muted); letter-spacing: 2px;
+  }
+ 
+  footer span { color: var(--accent); }
+ 
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    .hero-grid, .about-grid { grid-template-columns: 1fr; gap: 50px; }
+    .hero-right { order: -1; }
+    .photo-3d-wrapper { width: 240px; height: 290px; }
+    .skills-grid { grid-template-columns: 1fr; }
+    nav { padding: 14px 20px; }
+    .nav-links { gap: 18px; }
+    section { padding: 80px 20px; }
+  }
+ 
+  /* Glitch flicker for name */
+  .hero-name {
+    animation: name-in 1s ease forwards;
+  }
+  @keyframes name-in {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+ 
+  /* Animated accent lines */
+  .accent-line {
+    position: absolute; pointer-events: none; overflow: hidden;
+  }
+  .accent-line-h {
+    height: 1px; width: 200px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    animation: scan-h 3s ease-in-out infinite;
+  }
+  @keyframes scan-h {
+    0%, 100% { opacity: 0; transform: translateX(-100px); }
+    50% { opacity: 1; transform: translateX(100px); }
+  }
+ 
+  /* section reveal */
+  .reveal {
+    opacity: 0; transform: translateY(40px);
+    transition: opacity .8s ease, transform .8s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+ 
+  /* neon corner decoration */
+  .corner-deco {
+    position: absolute; width: 80px; height: 80px;
+    pointer-events: none;
+  }
+  .corner-deco.tl { top: 20px; left: 20px; border-top: 2px solid var(--accent); border-left: 2px solid var(--accent); }
+  .corner-deco.br { bottom: 20px; right: 20px; border-bottom: 2px solid var(--accent2); border-right: 2px solid var(--accent2); }
+ 
+  /* Logo grid specific */
+  .logo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 24px;
+  }
+  .logo-card {
+    background: var(--glass); border: 1px solid var(--border);
+    border-radius: 16px; overflow: hidden;
+    transition: transform .4s, border-color .4s, box-shadow .4s;
+    cursor: pointer;
+  }
+  .logo-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    border-color: var(--accent3);
+    box-shadow: 0 20px 50px rgba(255,60,110,0.2);
+  }
+  .logo-card .logo-img-wrap {
+    background: #fff; padding: 30px;
+    display: flex; align-items: center; justify-content: center;
+    height: 180px;
+  }
+  .logo-card img { max-width: 100%; max-height: 120px; object-fit: contain; }
+  .logo-card .logo-info { padding: 16px 20px; }
+  .logo-card .logo-name {
+    font-family: 'Orbitron', sans-serif; font-size: 0.8rem;
+    color: var(--text); letter-spacing: 1px;
+  }
+  .logo-card .logo-desc { font-size: 0.8rem; color: var(--muted); margin-top: 4px; }
+</style>
+</head>
+<body>
+ 
+<!-- Stars Background -->
+<canvas id="stars-canvas"></canvas>
+ 
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">SAKK</div>
+  <ul class="nav-links">
+    <li><a href="#hero">Home</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#marketing">Marketing</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#logos">Logos</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+ 
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid">
+    <div class="hero-left reveal">
+      <div class="greeting"><span class="fb-dot" style="background:var(--accent);box-shadow:0 0 8px var(--accent);"></span>Open to Opportunities</div>
+      <h1 class="hero-name">Sibyl Anto<br>K.K</h1>
+      <p class="hero-role">Digital Marketer &amp; Frontend Developer</p>
+      <p class="hero-desc">
+        Motivated and creative Digital Marketing fresher with strong understanding of SEO, 
+        social media, content creation, and online branding — combined with hands-on 
+        frontend development and Photoshop design skills.
+      </p>
+      <div class="hero-btns">
+        <a href="#projects" class="btn-primary">View Projects</a>
+        <a href="#contact" class="btn-outline">Contact Me</a>
+      </div>
+    </div>
+ 
+    <div class="hero-right">
+      <div class="photo-3d-wrapper">
+        <div class="card-glow-ring"></div>
+        <div class="photo-card">
+          <img src="https://cdn.corenexis.com/files/c/3451512720.jpg" alt="Sibyl Anto">
+        </div>
+        <div class="floating-badge fb-1"><span class="fb-dot"></span>Digital Marketer</div>
+        <div class="floating-badge fb-2"><span class="fb-dot"></span>Frontend Dev</div>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-header reveal">
+    <span class="section-tag">// who am i</span>
+    <h2 class="section-title">About Me</h2>
+    <div class="section-line"></div>
+  </div>
+ 
+  <div class="about-grid">
+    <div class="about-stats reveal">
+      <div class="stat-card"><span class="stat-number">B.com</span><div class="stat-label">Graduate — 2024</div></div>
+      <div class="stat-card"><span class="stat-number">6+</span><div class="stat-label">Digital Skills</div></div>
+      <div class="stat-card"><span class="stat-number">2</span><div class="stat-label">Academic Projects</div></div>
+      <div class="stat-card"><span class="stat-number">2</span><div class="stat-label">Languages</div></div>
+    </div>
+ 
+    <div class="about-content reveal">
+      <h3>Hello, I'm Sibyl Anto K.K 👋</h3>
+      <p>
+        Motivated and creative Digital Marketing fresher with a strong understanding of SEO, 
+        social media, content creation, and online branding. Eager to apply academic knowledge, 
+        certifications, and project experience to support business growth through innovative 
+        marketing strategies.
+      </p>
+      <p>
+        Seeking an entry-level role where I can learn, contribute, and build a successful career 
+        in digital marketing while helping the organization achieve its online visibility and 
+        engagement goals.
+      </p>
+ 
+      <!-- Education Timeline -->
+      <div style="margin:28px 0 24px;">
+        <div style="font-family:'Orbitron',sans-serif;font-size:0.85rem;color:var(--accent);letter-spacing:2px;margin-bottom:18px;text-transform:uppercase;">Education</div>
+ 
+        <div style="position:relative;padding-left:20px;border-left:2px solid rgba(0,210,255,0.2);display:flex;flex-direction:column;gap:18px;">
+ 
+          <div style="position:relative;">
+            <div style="position:absolute;left:-25px;top:4px;width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);"></div>
+            <div style="font-size:0.78rem;font-family:'Space Mono',monospace;color:var(--accent);letter-spacing:1px;">2021 – 2024</div>
+            <div style="font-size:1rem;font-weight:700;color:var(--text);margin-top:3px;">Bachelor of B.Com</div>
+            <div style="font-size:0.85rem;color:var(--muted);">Pioneer Kumaraswamy College &nbsp;·&nbsp; Manonmaniam Sundaranar University</div>
+          </div>
+ 
+          <div style="position:relative;">
+            <div style="position:absolute;left:-25px;top:4px;width:8px;height:8px;border-radius:50%;background:var(--accent2);box-shadow:0 0 8px var(--accent2);"></div>
+            <div style="font-size:0.78rem;font-family:'Space Mono',monospace;color:var(--accent2);letter-spacing:1px;">May 2021</div>
+            <div style="font-size:1rem;font-weight:700;color:var(--text);margin-top:3px;">H.Sc — 65.1%</div>
+            <div style="font-size:0.85rem;color:var(--muted);">V K P He.Sec. School, Colachel &nbsp;·&nbsp; State Board</div>
+          </div>
+ 
+          <div style="position:relative;">
+            <div style="position:absolute;left:-25px;top:4px;width:8px;height:8px;border-radius:50%;background:var(--accent3);box-shadow:0 0 8px var(--accent3);"></div>
+            <div style="font-size:0.78rem;font-family:'Space Mono',monospace;color:var(--accent3);letter-spacing:1px;">March 2019</div>
+            <div style="font-size:1rem;font-weight:700;color:var(--text);margin-top:3px;">SSLC — 40%</div>
+            <div style="font-size:0.85rem;color:var(--muted);">V K P He.Sec. School, Colachel &nbsp;·&nbsp; State Board</div>
+          </div>
+ 
+        </div>
+      </div>
+ 
+      <!-- Skills -->
+      <div style="font-family:'Orbitron',sans-serif;font-size:0.85rem;color:var(--accent);letter-spacing:2px;margin-bottom:16px;text-transform:uppercase;">Skills</div>
+      <div class="skills-grid">
+        <div class="skill-item">
+          <label>HTML / CSS</label>
+          <div class="skill-bar"><div class="skill-fill" style="width:90%;animation-delay:.1s"></div></div>
+        </div>
+        <div class="skill-item">
+          <label>JavaScript</label>
+          <div class="skill-bar"><div class="skill-fill" style="width:78%;animation-delay:.2s"></div></div>
+        </div>
+        <div class="skill-item">
+          <label>Adobe Photoshop</label>
+          <div class="skill-bar"><div class="skill-fill" style="width:88%;animation-delay:.3s"></div></div>
+        </div>
+        <div class="skill-item">
+          <label>SEO / SEM / SMM / SMO</label>
+          <div class="skill-bar"><div class="skill-fill" style="width:85%;animation-delay:.4s"></div></div>
+        </div>
+        <div class="skill-item">
+          <label>Content Strategy</label>
+          <div class="skill-bar"><div class="skill-fill" style="width:82%;animation-delay:.5s"></div></div>
+        </div>
+        <div class="skill-item">
+          <label>Affiliate Marketing</label>
+          <div class="skill-bar"><div class="skill-fill" style="width:75%;animation-delay:.6s"></div></div>
+        </div>
+        <div class="skill-item">
+          <label>Tally Basic</label>
+          <div class="skill-bar"><div class="skill-fill" style="width:65%;animation-delay:.7s"></div></div>
+        </div>
+        <div class="skill-item">
+          <label>Excel Basic</label>
+          <div class="skill-bar"><div class="skill-fill" style="width:68%;animation-delay:.8s"></div></div>
+        </div>
+      </div>
+ 
+      <!-- Languages + Digital Marketing tags -->
+      <div style="margin-top:24px;display:flex;flex-wrap:wrap;gap:10px;">
+        <span style="padding:6px 16px;border-radius:20px;background:rgba(0,210,255,0.08);border:1px solid rgba(0,210,255,0.25);font-size:0.8rem;color:var(--accent);">🌐 English</span>
+        <span style="padding:6px 16px;border-radius:20px;background:rgba(0,210,255,0.08);border:1px solid rgba(0,210,255,0.25);font-size:0.8rem;color:var(--accent);">🌐 Tamil</span>
+        <span style="padding:6px 16px;border-radius:20px;background:rgba(123,47,247,0.08);border:1px solid rgba(123,47,247,0.25);font-size:0.8rem;color:var(--accent2);">📍 Kandanvilai, TN — 629810</span>
+        <span style="padding:6px 16px;border-radius:20px;background:rgba(123,47,247,0.08);border:1px solid rgba(123,47,247,0.25);font-size:0.8rem;color:var(--accent2);">📞 9342779751</span>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<!-- DIGITAL MARKETING SECTION -->
+<section id="marketing" style="background:linear-gradient(180deg,var(--surface),var(--bg));padding:80px 40px;">
+  <div class="section-header reveal">
+    <span class="section-tag">// expertise</span>
+    <h2 class="section-title">Digital Marketing</h2>
+    <div class="section-line"></div>
+  </div>
+ 
+  <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px;">
+ 
+    <div class="stat-card reveal" style="text-align:left;padding:28px 30px;">
+      <div style="font-size:2rem;margin-bottom:12px;">🔍</div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:0.9rem;color:var(--accent);letter-spacing:1px;margin-bottom:8px;">SEO</div>
+      <div style="font-size:0.88rem;color:var(--muted);line-height:1.7;">Search Engine Optimization — improving website visibility organically through keyword strategy, on-page &amp; off-page techniques.</div>
+    </div>
+ 
+    <div class="stat-card reveal" style="text-align:left;padding:28px 30px;animation-delay:.1s">
+      <div style="font-size:2rem;margin-bottom:12px;">📱</div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:0.9rem;color:var(--accent2);letter-spacing:1px;margin-bottom:8px;">SMM &amp; SMO</div>
+      <div style="font-size:0.88rem;color:var(--muted);line-height:1.7;">Social Media Marketing &amp; Optimization — building brand presence and audience engagement across social platforms.</div>
+    </div>
+ 
+    <div class="stat-card reveal" style="text-align:left;padding:28px 30px;animation-delay:.2s">
+      <div style="font-size:2rem;margin-bottom:12px;">📊</div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:0.9rem;color:var(--accent3);letter-spacing:1px;margin-bottom:8px;">SEM</div>
+      <div style="font-size:0.88rem;color:var(--muted);line-height:1.7;">Search Engine Marketing — paid advertising campaigns (Google Ads) to drive targeted traffic and conversions.</div>
+    </div>
+ 
+    <div class="stat-card reveal" style="text-align:left;padding:28px 30px;animation-delay:.3s">
+      <div style="font-size:2rem;margin-bottom:12px;">🤝</div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:0.9rem;color:var(--gold);letter-spacing:1px;margin-bottom:8px;">Affiliate Marketing</div>
+      <div style="font-size:0.88rem;color:var(--muted);line-height:1.7;">Performance-based marketing — driving sales through partner networks, tracking and commission-based campaigns.</div>
+    </div>
+ 
+    <div class="stat-card reveal" style="text-align:left;padding:28px 30px;animation-delay:.4s">
+      <div style="font-size:2rem;margin-bottom:12px;">✍️</div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:0.9rem;color:var(--accent);letter-spacing:1px;margin-bottom:8px;">Content Strategy</div>
+      <div style="font-size:0.88rem;color:var(--muted);line-height:1.7;">Planning and creating compelling content to attract, engage, and retain target audiences across digital channels.</div>
+    </div>
+ 
+    <div class="stat-card reveal" style="text-align:left;padding:28px 30px;animation-delay:.5s">
+      <div style="font-size:2rem;margin-bottom:12px;">🌐</div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:0.9rem;color:var(--accent2);letter-spacing:1px;margin-bottom:8px;">Online Branding</div>
+      <div style="font-size:0.88rem;color:var(--muted);line-height:1.7;">Building a consistent, memorable brand identity across digital touchpoints to increase visibility and trust.</div>
+    </div>
+ 
+  </div>
+</section>
+ 
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-header reveal">
+    <span class="section-tag">// my work</span>
+    <h2 class="section-title">Featured Projects</h2>
+    <div class="section-line"></div>
+  </div>
+ 
+  <div class="projects-container">
+    <div class="proj-tabs">
+      <button class="tab-btn active" onclick="filterProjects('all', this)">All</button>
+      <button class="tab-btn" onclick="filterProjects('web', this)">Web Dev</button>
+      <button class="tab-btn" onclick="filterProjects('design', this)">Photoshop Design</button>
+    </div>
+ 
+    <div class="projects-grid" id="proj-grid">
+ 
+      <!-- Web Dev Video Project -->
+      <div class="proj-card reveal" data-cat="web" onclick="openVideo()">
+        <div class="proj-media">
+         <iframe 
+  src="https://drive.google.com/file/d/1qqQdgh8RkqjMbsRegsVqgyQkbk16O4Jb/preview"
+  width="100%" 
+  height="100%"
+  allow="autoplay"
+  style="pointer-events:none; border:none;">
+</iframe>
+          <div class="proj-type-badge badge-web">Web Dev</div>
+          <div class="play-overlay">
+            <div class="play-btn">
+              <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="proj-info">
+          <div class="proj-title">Movie Booking Website</div>
+          <div class="proj-desc">Designed and developed a responsive front-end movie booking website using HTML, CSS, and JavaScript. Click to watch the demo video.</div>
+          <div class="proj-tags">
+            <span class="proj-tag">HTML</span>
+            <span class="proj-tag">CSS</span>
+            <span class="proj-tag">JavaScript</span>
+            <span class="proj-tag">Responsive</span>
+          </div>
+        </div>
+      </div>
+ 
+      <!-- Photoshop: Birthday Party -->
+      <div class="proj-card reveal" data-cat="design" onclick="openImg('https://cdn.corenexis.com/files/c/6346796720.jpg','Birthday Party Landing Page')">
+        <div class="proj-media">
+          <img src="https://cdn.corenexis.com/files/c/6346796720.jpg" alt="Birthday Party Design">
+          <div class="proj-type-badge badge-ps">Photoshop</div>
+          <div class="play-overlay">
+            <div class="play-btn" style="background:rgba(123,47,247,0.9)">
+              <svg viewBox="0 0 24 24" style="fill:#fff;margin-left:0;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="proj-info">
+          <div class="proj-title">Vito Birthday Party — Landing Page</div>
+          <div class="proj-desc">Vibrant event landing page with fluid shapes and dynamic composition.</div>
+          <div class="proj-tags"><span class="proj-tag">Photoshop</span><span class="proj-tag">Web Design</span><span class="proj-tag">UI</span></div>
+        </div>
+      </div>
+ 
+      <!-- Photoshop: Super Sale Banner -->
+      <div class="proj-card reveal" data-cat="design" onclick="openImg('https://cdn.corenexis.com/files/c/6573472720.png','Super Sale Banner')">
+        <div class="proj-media">
+          <img src="https://cdn.corenexis.com/files/c/6573472720.png" alt="Super Sale Banner">
+          <div class="proj-type-badge badge-ps">Photoshop</div>
+          <div class="play-overlay">
+            <div class="play-btn" style="background:rgba(123,47,247,0.9)">
+              <svg viewBox="0 0 24 24" style="fill:#fff;margin-left:0;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="proj-info">
+          <div class="proj-title">Super Sale — Brand Ad Banner</div>
+          <div class="proj-desc">Bold blue-and-gold promotional banner with 60% off campaign design.</div>
+          <div class="proj-tags"><span class="proj-tag">Photoshop</span><span class="proj-tag">Ad Design</span><span class="proj-tag">Marketing</span></div>
+        </div>
+      </div>
+ 
+      <!-- Photoshop: Rockslide Adventure -->
+      <div class="proj-card reveal" data-cat="design" onclick="openImg('https://cdn.corenexis.com/files/c/7681153720.jpg','Rockslide Adventure Tours')">
+        <div class="proj-media">
+          <img src="https://cdn.corenexis.com/files/c/7681153720.jpg" alt="Rockslide Adventure Tours">
+          <div class="proj-type-badge badge-ps">Web Design</div>
+          <div class="play-overlay">
+            <div class="play-btn" style="background:rgba(123,47,247,0.9)">
+              <svg viewBox="0 0 24 24" style="fill:#fff;margin-left:0;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="proj-info">
+          <div class="proj-title">Digital Marketing Design — Travel &amp; Adventure</div>
+          <div class="proj-desc">Created a professional travel &amp; adventure tour website mockup in Photoshop, incorporating banners, icons, and layered graphics for a visually appealing UI.</div>
+          <div class="proj-tags"><span class="proj-tag">Photoshop</span><span class="proj-tag">UI/UX</span><span class="proj-tag">Banners</span><span class="proj-tag">Layered Graphics</span></div>
+        </div>
+      </div>
+ 
+    </div>
+  </div>
+</section>
+ 
+<!-- LOGOS SECTION -->
+<section id="logos" style="background:linear-gradient(180deg,var(--surface),var(--bg));">
+  <div class="section-header reveal">
+    <span class="section-tag">// logo design</span>
+    <h2 class="section-title">Logo Portfolio</h2>
+    <div class="section-line"></div>
+  </div>
+ 
+  <div class="logo-grid reveal" style="max-width:1100px;margin:0 auto;">
+ 
+    <div class="logo-card" onclick="openImg('https://cdn.corenexis.com/files/c/7229594720.jpg','B4U Music Logo')">
+      <div class="logo-img-wrap"><img src="https://cdn.corenexis.com/files/c/7229594720.jpg" alt="B4U Music Logo"></div>
+      <div class="logo-info"><div class="logo-name">B4U Music</div><div class="logo-desc">Bold music channel branding</div></div>
+    </div>
+ 
+    <div class="logo-card" onclick="openImg('https://cdn.corenexis.com/files/c/4631823720.jpg','AVG Anti-Virus Logo')">
+      <div class="logo-img-wrap"><img src="https://cdn.corenexis.com/files/c/4631823720.jpg" alt="AVG Anti-Virus Logo"></div>
+      <div class="logo-info"><div class="logo-name">AVG Anti-Virus</div><div class="logo-desc">Security software brand identity</div></div>
+    </div>
+ 
+    <div class="logo-card" onclick="openImg('https://cdn.corenexis.com/files/c/9954321720.jpg','Java Logo')">
+      <div class="logo-img-wrap"><img src="https://cdn.corenexis.com/files/c/9954321720.jpg" alt="Java Logo"></div>
+      <div class="logo-info"><div class="logo-name">Java</div><div class="logo-desc">Tech brand logo recreation</div></div>
+    </div>
+ 
+    <div class="logo-card" onclick="openImg('https://cdn.corenexis.com/files/c/3743318720.jpg','KFC Logo')">
+      <div class="logo-img-wrap"><img src="https://cdn.corenexis.com/files/c/3743318720.jpg" alt="KFC Logo"></div>
+      <div class="logo-info"><div class="logo-name">KFC</div><div class="logo-desc">Fast food brand logo design</div></div>
+    </div>
+ 
+    <div class="logo-card" onclick="openImg('https://cdn.corenexis.com/files/c/4998762720.jpg','Community Logo')">
+      <div class="logo-img-wrap" style="background:#f5f5f5;"><img src="https://cdn.corenexis.com/files/c/4998762720.jpg" alt="Community Logo"></div>
+      <div class="logo-info"><div class="logo-name">Community Logo</div><div class="logo-desc">Dynamic people &amp; unity brand mark</div></div>
+    </div>
+ 
+    <div class="logo-card" onclick="openImg('https://cdn.corenexis.com/files/c/9798756720.jpg','Red Hot Chilli Pipers')">
+      <div class="logo-img-wrap" style="background:#fff;"><img src="https://cdn.corenexis.com/files/c/9798756720.jpg" alt="Red Hot Chilli Pipers Logo" style="object-fit:contain;"></div>
+      <div class="logo-info"><div class="logo-name">Red Hot Chilli Pipers</div><div class="logo-desc">Music act brand logo</div></div>
+    </div>
+ 
+  </div>
+</section>
+ 
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="section-header reveal">
+      <span class="section-tag">// get in touch</span>
+      <h2 class="section-title">Contact Me</h2>
+      <div class="section-line"></div>
+    </div>
+ 
+    <div class="contact-card reveal">
+      <p style="color:var(--muted);font-size:1.05rem;line-height:1.8;">
+        I'm actively looking for an entry-level role in Digital Marketing or Frontend Development. 
+        If you have a project or opportunity — let's connect and create something amazing together!
+      </p>
+ 
+      <div class="contact-links">
+        <a href="mailto:sibylanto6@gmail.com" class="contact-link">
+          <span class="icon">✉️</span> sibylanto6@gmail.com
+        </a>
+        <a href="tel:9342779751" class="contact-link">
+          <span class="icon">📞</span> 9342779751
+        </a>
+        <a href="#" class="contact-link">
+          <span class="icon">📍</span> Kandanvilai, TN — 629810
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<footer>
+  Designed &amp; Built by <span>Sibyl Anto K.K</span> — <span>© 2025</span> &nbsp;·&nbsp; sibylanto6@gmail.com &nbsp;·&nbsp; 9342779751
+</footer>
+ 
+<!-- VIDEO MODAL -->
+<div class="modal-overlay" id="videoModal" onclick="closeModal(event)">
+  <div class="modal-box">
+    <button class="modal-close" onclick="document.getElementById('videoModal').classList.remove('active');document.getElementById('modalVid').pause()">✕</button>
+    <video id="modalVid" class="modal-video" controls playsinline>
+      <source src="/mnt/user-data/uploads/Screen_Recording_2025-10-14_113630.mp4" type="video/mp4">
+    </video>
+  </div>
+</div>
+ 
+<!-- IMAGE MODAL -->
+<div class="modal-overlay" id="imgModal" onclick="closeModal(event)">
+  <div class="modal-box">
+    <button class="modal-close" onclick="document.getElementById('imgModal').classList.remove('active')">✕</button>
+    <img id="modalImg" class="modal-img" src="" alt="">
+  </div>
+</div>
+ 
+<script>
+// ─── Stars Canvas ───
+const canvas = document.getElementById('stars-canvas');
+const ctx = canvas.getContext('2d');
+let stars = [];
+ 
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+ 
+function initStars() {
+  stars = [];
+  for (let i = 0; i < 200; i++) {
+    stars.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 1.5 + 0.2,
+      alpha: Math.random(),
+      speed: Math.random() * 0.3 + 0.05,
+      twinkle: Math.random() * Math.PI * 2
+    });
+  }
+}
+initStars();
+ 
+function animateStars() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  stars.forEach(s => {
+    s.twinkle += 0.02;
+    s.alpha = (Math.sin(s.twinkle) + 1) / 2 * 0.8 + 0.1;
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(150, 220, 255, ${s.alpha})`;
+    ctx.fill();
+    s.y -= s.speed;
+    if (s.y < 0) { s.y = canvas.height; s.x = Math.random() * canvas.width; }
+  });
+  requestAnimationFrame(animateStars);
+}
+animateStars();
+ 
+// ─── Scroll Reveal ───
+const revealEls = document.querySelectorAll('.reveal');
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.12 });
+revealEls.forEach(el => revealObs.observe(el));
+ 
+// ─── Video hover play ───
+const thumb = document.getElementById('proj-vid-thumb');
+if (thumb) {
+  thumb.parentElement.parentElement.addEventListener('mouseenter', () => thumb.play());
+  thumb.parentElement.parentElement.addEventListener('mouseleave', () => { thumb.pause(); thumb.currentTime = 0; });
+}
+ 
+// ─── Filter ───
+function filterProjects(cat, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.proj-card').forEach(card => {
+    if (cat === 'all' || card.dataset.cat === cat) {
+      card.style.display = '';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+ 
+// ─── Modals ───
+function openVideo() {
+  const modal = document.getElementById('videoModal');
+  const vid = document.getElementById('modalVid');
+  modal.classList.add('active');
+  vid.play();
+}
+ 
+function openImg(src, title) {
+  const modal = document.getElementById('imgModal');
+  document.getElementById('modalImg').src = src;
+  document.getElementById('modalImg').alt = title;
+  modal.classList.add('active');
+}
+ 
+function closeModal(e) {
+  if (e.target.classList.contains('modal-overlay')) {
+    document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
+    document.getElementById('modalVid').pause();
+  }
+}
+ 
+// Escape key close
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
+    document.getElementById('modalVid').pause();
+  }
+});
+ 
+// ─── 3D tilt on mouse move ───
+const wrapper = document.querySelector('.photo-3d-wrapper');
+if (wrapper) {
+  document.addEventListener('mousemove', (e) => {
+    const rect = wrapper.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    const dx = (e.clientX - cx) / window.innerWidth;
+    const dy = (e.clientY - cy) / window.innerHeight;
+    wrapper.style.animation = 'none';
+    wrapper.style.transform = `rotateY(${dx * 20}deg) rotateX(${-dy * 15}deg)`;
+  });
+  wrapper.addEventListener('mouseleave', () => {
+    wrapper.style.animation = 'float3d 6s ease-in-out infinite';
+  });
+}
+ 
+ 
+</script>
+</body>
+</html>
+ 
